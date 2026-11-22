@@ -617,24 +617,120 @@ function checkHTML(src){
   stack.slice(0,Math.max(0,30-issues.length)).forEach(s=>issues.push({line:s.line,msg:t('problems.unclosed',{tag:s.name})}));
   return issues;
 }
-function checkBrackets(src, l){
-  const issues=[]; const starts=lineStartsOf(src); const stack=[];
-  const pairs={')':'(',']':'[','}':'{'};
-  const re = l==='css'
-    ? /\/\*[\s\S]*?(?:\*\/|$)|"[^"\n]*"?|'[^'\n]*'?|[{}]|[\s\S]/g
-    : /\/\/[^\n]*|\/\*[\s\S]*?(?:\*\/|$)|`(?:\\[\s\S]|[^\\`])*`?|"(?:\\.|[^"\\\n])*"?|'(?:\\.|[^'\\\n])*'?|[{}()\[\]]|[\s\S]/g;
-  let m;
-  while((m=re.exec(src)) && issues.length<30){
-    const tk=m[0]; if(tk.length!==1||!'{}()[]'.includes(tk)) continue;
-    const line=idxToLine(starts,m.index)+1;
-    if(tk==='('||tk==='['||tk==='{') stack.push({t:tk,line});
-    else{
-      const top=stack[stack.length-1];
-      if(top && top.t===pairs[tk]) stack.pop();
-      else issues.push({line,msg:t('problems.stray',{ch:tk})});
+
+const REGEX_PREV_KW = new Set([
+  'return','typeof','instanceof','in','of','new','delete','void','throw',
+  'case','do','else','yield','await'
+]);
+
+function regexAllowed(prev){
+  if(!prev) return true;
+  if(prev === 'value') return false;
+  if(REGEX_PREV_KW.has(prev)) return true;
+  if(prev === '=>') return true;
+  if(/^[{}()\[\];,:?=!&|+\-*%<>~^]$/.test(prev)) return true;
+  if(/^[+\-*\/%<>=!&|?:]+$/.test(prev)) return true;
+  return false;
+}
+
+/* Возвращает индекс сразу после закрывающего / и флагов, либо -1. */
+function scanRegexLiteral(src, start){
+  let j = start + 1, inClass = false;
+  while(j < src.length){
+    const c = src[j];
+    if(c === '\\'){ j += 2; continue; }
+    if(c === '\n' || c === '\r') return -1;
+    if(c === '[') inClass = true;
+    else if(c === ']') inClass = false;
+    else if(c === '/' && !inClass){
+      j++;
+      while(j < src.length && /[dgimsuvy]/.test(src[j])) j++;
+      return j;
     }
+    j++;
   }
-  stack.slice(0,Math.max(0,30-issues.length)).forEach(s=>issues.push({line:s.line,msg:t('problems.unclosedBracket',{ch:s.t})}));
+  return -1;
+}
+
+function checkBrackets(src, l){
+  const issues = [];
+  const starts = lineStartsOf(src);
+  const stack = [];
+  const pairs = {')':'(', ']':'[', '}':'{'};
+  const pushIssue = (line, key, ch) => {
+    if(issues.length < 30) issues.push({line, msg:t(key, {ch})});
+  };
+  const flushUnclosed = () => {
+    for(const s of stack){
+      if(issues.length >= 30) break;
+      issues.push({line:s.line, msg:t('problems.unclosedBracket', {ch:s.t})});
+    }
+  };
+
+  if(l === 'css'){
+    const re = /\/\*[\s\S]*?(?:\*\/|$)|"[^"\n]*"?|'[^'\n]*'?|[{}]|[\s\S]/g;
+    let m;
+    while((m = re.exec(src))){
+      const tk = m[0];
+      if(tk !== '{' && tk !== '}') continue;
+      const line = idxToLine(starts, m.index) + 1;
+      if(tk === '{') stack.push({t:tk, line});
+      else{
+        const top = stack[stack.length - 1];
+        if(top && top.t === '{') stack.pop();
+        else pushIssue(line, 'problems.stray', tk);
+      }
+    }
+    flushUnclosed();
+    return issues;
+  }
+
+  /* JS: пропускаем комментарии, строки, шаблоны и regex-литералы. */
+  const re = /\/\/[^\n]*|\/\*[\s\S]*?(?:\*\/|$)|`(?:\\[\s\S]|[^\\`])*`?|"(?:\\.|[^"\\\n])*"?|'(?:\\.|[^'\\\n])*'?|[{}()\[\]]|[A-Za-z_$][\w$]*|\d+(?:\.\d+)?|=>|[+\-*\/%<>=!&|?:]+|\s+|[\s\S]/g;
+  let m, prev = '';
+  while((m = re.exec(src))){
+    const tk = m[0];
+
+    if(tk.startsWith('//') || tk.startsWith('/*')) continue;
+
+    if(tk[0] === '"' || tk[0] === "'" || tk[0] === '`'){
+      prev = 'value';
+      continue;
+    }
+
+    if(tk[0] === '/' && regexAllowed(prev)){
+      const end = scanRegexLiteral(src, m.index);
+      if(end > m.index){
+        re.lastIndex = end;
+        prev = 'value';
+        continue;
+      }
+    }
+
+    if(/^\s+$/.test(tk)) continue;
+
+    if(/^[A-Za-z_$]/.test(tk)){ prev = tk; continue; }
+    if(/^\d/.test(tk)){ prev = 'value'; continue; }
+
+    if(tk === '{' || tk === '(' || tk === '['){
+      stack.push({t:tk, line:idxToLine(starts, m.index) + 1});
+      prev = tk;
+      continue;
+    }
+
+    if(tk === '}' || tk === ')' || tk === ']'){
+      const line = idxToLine(starts, m.index) + 1;
+      const top = stack[stack.length - 1];
+      if(top && top.t === pairs[tk]) stack.pop();
+      else pushIssue(line, 'problems.stray', tk);
+      prev = tk;
+      continue;
+    }
+
+    prev = tk;
+  }
+
+  flushUnclosed();
   return issues;
 }
 function runCheck(){
