@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ru" data-theme="dark">
 <head>
@@ -7,61 +8,42 @@
 <meta name="description" content="HubPad — локальный HTML/CSS/JS редактор с живым предпросмотром, деплоем в новую вкладку и скачиванием файлов.">
 <title>HubPad</title>
 <link id="favicon" rel="icon" href="data:,">
-
 <link id="appCss" rel="stylesheet" href="css/styles.css">
-<script id="appI18n" defer src="js/i18n.js"></script>
-<script id="appJs" defer src="js/app.js"></script>
+<link id="bkCss" rel="stylesheet" href="css/brackets.css">
+<script defer src="i18n/manifest.js"></script>
+<script defer src="js/i18n.js"></script>
+<script defer src="i18n/ru.js"></script>
+<script defer src="i18n/en.js"></script>
+<script defer src="js/app.js"></script>
+<script defer src="js/brackets.js"></script>
 <script>
-window.__hubpadAssets = {cssLoaded:false, cssError:false, i18nLoaded:false, i18nError:false, jsLoaded:false, jsError:false};
+window.__hubpadAssets={cssLoaded:false,cssError:false,i18nLoaded:false,i18nError:false,jsLoaded:false,jsError:false};
 (function(){
-  var l=document.getElementById('appCss'), i=document.getElementById('appI18n'), s=document.getElementById('appJs');
-  l.addEventListener('load',function(){ window.__hubpadAssets.cssLoaded=true; });
-  l.addEventListener('error',function(){ window.__hubpadAssets.cssError=true; });
-  i.addEventListener('load',function(){ window.__hubpadAssets.i18nLoaded=true; });
-  i.addEventListener('error',function(){ window.__hubpadAssets.i18nError=true; });
-  s.addEventListener('load',function(){ window.__hubpadAssets.jsLoaded=true; });
-  s.addEventListener('error',function(){ window.__hubpadAssets.jsError=true; });
+  var l=document.getElementById('appCss'),i=document.getElementById('appI18n'),s=document.getElementById('appJs');
+  if(l){l.addEventListener('load',function(){window.__hubpadAssets.cssLoaded=true;});l.addEventListener('error',function(){window.__hubpadAssets.cssError=true;});}
+  if(s){s.addEventListener('load',function(){window.__hubpadAssets.jsLoaded=true;});s.addEventListener('error',function(){window.__hubpadAssets.jsError=true;});}
 })();
 </script>
 </head>
 <body>
-<noscript>
-  <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:32px;background:#0d1117;color:#e6edf3;font:15px/1.6 -apple-system,'Segoe UI',Helvetica,Arial,sans-serif;text-align:center">
-    HubPad requires JavaScript · HubPad требует включённый JavaScript.
-  </div>
-</noscript>
+<noscript><div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:32px;background:#0d1117;color:#e6edf3;font:15px/1.6 -apple-system,'Segoe UI',Helvetica,Arial,sans-serif;text-align:center">HubPad requires JavaScript · HubPad требует включённый JavaScript.</div></noscript>
 
 <div class="app" id="app">
-  <!-- ======= ШАПКА ======= -->
   <header class="topbar">
     <div class="brand" id="brand"></div>
-    <div class="repo-crumb">
-      <span>hubpad</span><span class="sep">/</span><b>playground</b>
-      <span class="badge-public" data-i18n="top.public">Public</span>
-    </div>
-    <button class="star-btn" id="starBtn" type="button" data-i18n-attr="title:top.starTitle">
-      <span class="sb-l" id="starIco"></span><span class="sb-n" id="starCount">128</span>
-    </button>
+    <div class="repo-crumb"><span>hubpad</span><span class="sep">/</span><b>playground</b><span class="badge-public" data-i18n="top.public">Public</span></div>
+    <button class="star-btn" id="starBtn" type="button" data-i18n-attr="title:top.starTitle"><span class="sb-l" id="starIco"></span><span class="sb-n" id="starCount">128</span></button>
     <div class="spacer"></div>
-    <button class="search-trigger" id="searchTrigger" type="button" data-i18n-attr="title:top.searchTitle">
-      <span id="searchIco"></span><span class="st-txt" data-i18n="top.search">Поиск или команда…</span><kbd>Ctrl K</kbd>
-    </button>
+    <button class="search-trigger" id="searchTrigger" type="button" data-i18n-attr="title:top.searchTitle"><span id="searchIco"></span><span class="st-txt" data-i18n="top.search">Поиск или команда…</span><kbd>Ctrl K</kbd></button>
     <div class="top-actions">
-      <button class="icon-btn tb-btn-txt" id="langBtn" type="button" data-i18n-attr="title:app.lang;aria-label:app.lang">
-        <span id="langIco"></span><span id="langCode">RU</span>
-      </button>
+      <button class="icon-btn tb-btn-txt" id="langBtn" type="button" data-i18n-attr="title:app.lang;aria-label:app.lang"><span id="langIco"></span><span id="langCode">RU</span></button>
       <button class="icon-btn" id="themeBtn" type="button"></button>
-      <button class="btn" id="dlBtn" type="button" data-i18n-attr="title:top.downloadTitle">
-        <span id="dlIco"></span><span class="btn-label" data-i18n="top.download">Скачать</span><span class="dl-caret" id="dlCaret"></span>
-      </button>
-      <button class="btn btn-primary" id="deployBtn" type="button">
-        <span class="btn-label" data-i18n="top.open">Открыть</span><span id="deployIco"></span>
-      </button>
+      <button class="btn" id="dlBtn" type="button" data-i18n-attr="title:top.downloadTitle"><span id="dlIco"></span><span class="btn-label" data-i18n="top.download">Скачать</span><span class="dl-caret" id="dlCaret"></span></button>
+      <button class="btn btn-primary" id="deployBtn" type="button"><span class="btn-label" data-i18n="top.open">Открыть</span><span id="deployIco"></span></button>
     </div>
   </header>
 
   <div class="workspace">
-    <!-- ======= САЙДБАР ======= -->
     <aside class="sidebar" id="sidebar">
       <div class="sb-head">
         <div class="sb-title"><span id="sbFolderIco"></span><span data-i18n="sidebar.title">Файлы проекта</span> <span class="count-pill" id="sbCount">0</span></div>
@@ -70,10 +52,8 @@ window.__hubpadAssets = {cssLoaded:false, cssError:false, i18nLoaded:false, i18n
       </div>
       <div class="sb-tools">
         <div class="sb-filter-wrap">
-          <input class="field" id="sbFilter" autocomplete="off" spellcheck="false"
-                 data-i18n-attr="placeholder:sidebar.filter;aria-label:sidebar.filter">
-          <button class="icon-btn sb-clear" id="sbClear" type="button" hidden
-                  data-i18n-attr="title:sidebar.filterClear;aria-label:sidebar.filterClear"></button>
+          <input class="field" id="sbFilter" autocomplete="off" spellcheck="false" data-i18n-attr="placeholder:sidebar.filter;aria-label:sidebar.filter">
+          <button class="icon-btn sb-clear" id="sbClear" type="button" hidden data-i18n-attr="title:sidebar.filterClear;aria-label:sidebar.filterClear"></button>
         </div>
         <select class="sel" id="sbSort" data-i18n-attr="title:sidebar.sort;aria-label:sidebar.sort">
           <option value="manual" data-i18n="sidebar.sortManual">Свой порядок</option>
@@ -86,37 +66,26 @@ window.__hubpadAssets = {cssLoaded:false, cssError:false, i18nLoaded:false, i18n
         <b id="bulkCount"></b>
         <button class="btn btn-sm" id="bulkZip" type="button" data-i18n-attr="title:bulk.zip"></button>
         <button class="btn btn-sm btn-danger" id="bulkDel" type="button" data-i18n-attr="title:bulk.del"></button>
-        <button class="icon-btn" id="bulkClear" type="button" style="width:24px;height:24px"
-                data-i18n-attr="title:bulk.clear;aria-label:bulk.clear"></button>
+        <button class="icon-btn" id="bulkClear" type="button" style="width:24px;height:24px" data-i18n-attr="title:bulk.clear;aria-label:bulk.clear"></button>
       </div>
       <div class="file-list" id="fileList"></div>
       <div class="sb-foot">
         <span id="sbUsageText"></span>
         <div class="meter"><i id="sbUsageBar"></i></div>
-        <p class="legal-note">
-          <span data-i18n="legal.short">Не аффилирован с GitHub, Inc.</span>
-          <button class="legal-link" id="legalBtn" type="button" data-i18n="legal.more">Подробнее</button>
-        </p>
+        <p class="legal-note"><span data-i18n="legal.short">Не аффилирован с GitHub, Inc.</span> <button class="legal-link" id="legalBtn" type="button" data-i18n="legal.more">Подробнее</button></p>
       </div>
     </aside>
     <div class="sb-scrim" id="sbScrim" hidden></div>
     <div class="sb-divider" id="sbDivider" data-i18n-attr="title:sidebar.divider"></div>
 
-    <!-- ======= ЦЕНТР ======= -->
     <main class="main" id="main" data-layout="split">
       <section class="editor-pane" id="editorPane">
-        <div class="tabs-row">
-          <div class="tabs" id="tabs" role="tablist"></div>
-          <button class="icon-btn tab-add" id="tabAdd" type="button" data-i18n-attr="title:sidebar.new;aria-label:sidebar.new"></button>
-        </div>
+        <div class="tabs-row"><div class="tabs" id="tabs" role="tablist"></div><button class="icon-btn tab-add" id="tabAdd" type="button" data-i18n-attr="title:sidebar.new;aria-label:sidebar.new"></button></div>
         <div class="ed-toolbar" id="edToolbar">
-          <button class="icon-btn" id="sidebarBtn" type="button" aria-pressed="true"
-                  data-i18n-attr="title:toolbar.sidebar;aria-label:toolbar.sidebarAria"></button>
+          <button class="icon-btn" id="sidebarBtn" type="button" aria-pressed="true" data-i18n-attr="title:toolbar.sidebar;aria-label:toolbar.sidebarAria"></button>
           <div class="crumb">
             <span class="crumb-folder"><span id="crumbFolderIco"></span>playground<span>/</span></span>
-            <button class="crumb-file" id="crumbFile" type="button" data-i18n-attr="title:toolbar.rename">
-              <span id="crumbDot" class="f-dot"></span><span id="crumbName">—</span>
-            </button>
+            <button class="crumb-file" id="crumbFile" type="button" data-i18n-attr="title:toolbar.rename"><span id="crumbDot" class="f-dot"></span><span id="crumbName">—</span></button>
           </div>
           <div class="tb-group">
             <button class="icon-btn" id="undoBtn" type="button" data-i18n-attr="title:toolbar.undo;aria-label:toolbar.undoAria"></button>
@@ -125,10 +94,7 @@ window.__hubpadAssets = {cssLoaded:false, cssError:false, i18nLoaded:false, i18n
           </div>
           <div class="tb-group">
             <button class="icon-btn" id="wrapBtn" type="button" aria-pressed="false" data-i18n-attr="title:toolbar.wrap;aria-label:toolbar.wrap"></button>
-            <span class="tab-size-wrap"><select class="sel" id="tabSizeSel" data-i18n-attr="title:toolbar.indent;aria-label:toolbar.indent">
-              <option value="2" data-i18n="toolbar.indentOpt2">Отступ: 2</option>
-              <option value="4" data-i18n="toolbar.indentOpt4">Отступ: 4</option>
-            </select></span>
+            <span class="tab-size-wrap"><select class="sel" id="tabSizeSel" data-i18n-attr="title:toolbar.indent;aria-label:toolbar.indent"><option value="2">Отступ: 2</option><option value="4">Отступ: 4</option></select></span>
             <button class="icon-btn tb-btn-txt" id="fontMinus" type="button" data-i18n-attr="title:toolbar.fontMinus;aria-label:toolbar.fontMinus">A−</button>
             <span class="font-val" id="fontVal">13px</span>
             <button class="icon-btn tb-btn-txt" id="fontPlus" type="button" data-i18n-attr="title:toolbar.fontPlus;aria-label:toolbar.fontPlus">A+</button>
@@ -142,14 +108,13 @@ window.__hubpadAssets = {cssLoaded:false, cssError:false, i18nLoaded:false, i18n
           </div>
         </div>
 
-        <div class="ed-scroll" id="edScroll">
+        <div class="ed-scroll" id="edScroll" data-bstyle="box">
           <div class="ed-inner">
             <div class="gutter" id="gutter" aria-hidden="true"></div>
             <div class="code-wrap" id="codeWrap">
               <div class="active-line" id="activeLine"></div>
               <pre class="hl" id="hl" aria-hidden="true"></pre>
-              <textarea class="code-input" id="code" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"
-                        data-i18n-attr="aria-label:editor.aria"></textarea>
+              <textarea class="code-input" id="code" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" data-i18n-attr="aria-label:editor.aria"></textarea>
               <span class="code-metrics" id="metrics">0000000000</span>
             </div>
           </div>
@@ -160,10 +125,7 @@ window.__hubpadAssets = {cssLoaded:false, cssError:false, i18nLoaded:false, i18n
             <div class="empty-ring" id="edEmptyIco"></div>
             <h3 data-i18n="editor.emptyTitle">Нет открытого файла</h3>
             <p data-i18n="editor.emptyText">Создайте новый файл, импортируйте свой или откройте что-нибудь из проекта.</p>
-            <div class="empty-actions">
-              <button class="btn btn-primary" id="emptyNewBtn" type="button"></button>
-              <button class="btn" id="emptyImportBtn" type="button"></button>
-            </div>
+            <div class="empty-actions"><button class="btn btn-primary" id="emptyNewBtn" type="button"></button><button class="btn" id="emptyImportBtn" type="button"></button></div>
             <div class="empty-chips" id="emptyChips"></div>
           </div>
         </div>
@@ -185,7 +147,6 @@ window.__hubpadAssets = {cssLoaded:false, cssError:false, i18nLoaded:false, i18n
 
       <div class="pv-divider" id="pvDivider" data-i18n-attr="title:preview.divider"></div>
 
-      <!-- ======= ПРЕДПРОСМОТР ======= -->
       <section class="preview-pane" id="previewPane">
         <div class="pv-head">
           <span class="pv-title"><span id="pvEye"></span><span data-i18n="preview.title">Предпросмотр</span></span>
@@ -197,20 +158,12 @@ window.__hubpadAssets = {cssLoaded:false, cssError:false, i18nLoaded:false, i18n
             <button class="seg-btn" type="button" data-device="768" data-i18n-attr="title:preview.tablet;aria-label:preview.tablet"></button>
             <button class="seg-btn" type="button" data-device="auto" data-i18n-attr="title:preview.full;aria-label:preview.full"></button>
           </div>
-          <label class="pv-auto" data-i18n-attr="title:preview.autoTitle">
-            <button class="switch" id="pvAuto" type="button" role="switch" aria-checked="true" data-i18n-attr="aria-label:preview.autoAria"></button>
-            <span data-i18n="preview.auto">Авто</span>
-          </label>
+          <label class="pv-auto" data-i18n-attr="title:preview.autoTitle"><button class="switch" id="pvAuto" type="button" role="switch" aria-checked="true" data-i18n-attr="aria-label:preview.autoAria"></button><span data-i18n="preview.auto">Авто</span></label>
           <button class="icon-btn" id="pvRefresh" type="button" data-i18n-attr="title:preview.refresh;aria-label:preview.refresh"></button>
           <button class="icon-btn" id="pvOpen" type="button" data-i18n-attr="title:preview.open;aria-label:preview.open"></button>
           <button class="icon-btn" id="pvClose" type="button" data-i18n-attr="title:preview.close;aria-label:preview.close"></button>
         </div>
-        <div class="pv-stage" id="pvStage">
-          <div class="pv-frame" id="pvFrame">
-            <iframe id="pvIframe" data-i18n-attr="title:preview.iframe"
-                    sandbox="allow-scripts allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-downloads"></iframe>
-          </div>
-        </div>
+        <div class="pv-stage" id="pvStage"><div class="pv-frame" id="pvFrame"><iframe id="pvIframe" data-i18n-attr="title:preview.iframe" sandbox="allow-scripts allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-downloads"></iframe></div></div>
         <div class="pv-empty" id="pvEmpty" hidden>
           <div class="empty-state">
             <div class="empty-ring" id="pvEmptyIco"></div>
@@ -224,22 +177,12 @@ window.__hubpadAssets = {cssLoaded:false, cssError:false, i18nLoaded:false, i18n
   </div>
 </div>
 
-<!-- ======= СЛОИ ======= -->
 <div class="scrim" id="scrim" hidden></div>
 <div class="modal" id="modal" role="dialog" aria-modal="true" hidden data-i18n-attr="aria-label:modal.dialog"></div>
 <div class="palette" id="palette" role="dialog" aria-modal="true" hidden data-i18n-attr="aria-label:palette.aria">
-  <div class="pal-input-row">
-    <span id="palSearchIco"></span>
-    <input class="pal-input" id="palInput" autocomplete="off" spellcheck="false"
-           data-i18n-attr="placeholder:palette.placeholder;aria-label:palette.inputAria">
-    <kbd>Esc</kbd>
-  </div>
+  <div class="pal-input-row"><span id="palSearchIco"></span><input class="pal-input" id="palInput" autocomplete="off" spellcheck="false" data-i18n-attr="placeholder:palette.placeholder;aria-label:palette.inputAria"><kbd>Esc</kbd></div>
   <div class="pal-list" id="palList"></div>
-  <div class="pal-foot">
-    <span><kbd>↑</kbd><kbd>↓</kbd> <span data-i18n="palette.nav">навигация</span></span>
-    <span><kbd>Enter</kbd> <span data-i18n="palette.open">открыть</span></span>
-    <span><kbd>&gt;</kbd> <span data-i18n="palette.cmd">только команды</span></span>
-  </div>
+  <div class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> <span data-i18n="palette.nav">навигация</span></span><span><kbd>Enter</kbd> <span data-i18n="palette.open">открыть</span></span><span><kbd>&gt;</kbd> <span data-i18n="palette.cmd">только команды</span></span></div>
 </div>
 <div class="drawer" id="drawer" role="dialog" aria-modal="true" hidden data-i18n-attr="aria-label:drawer.title"></div>
 
@@ -248,10 +191,7 @@ window.__hubpadAssets = {cssLoaded:false, cssError:false, i18nLoaded:false, i18n
   <label class="field-label" for="dlName" data-i18n="download.name">Имя файла</label>
   <input class="field" id="dlName" autocomplete="off" spellcheck="false" autocapitalize="off" enterkeyhint="done">
   <div class="field-hint" id="dlHint"></div>
-  <label class="dl-standalone" id="dlStandaloneWrap">
-    <input type="checkbox" id="dlStandalone">
-    <span data-i18n="download.standalone">Автономная страница — встроить связанные CSS, JS и SVG прямо в файл</span>
-  </label>
+  <label class="dl-standalone" id="dlStandaloneWrap"><input type="checkbox" id="dlStandalone"><span data-i18n="download.standalone">Автономная страница — встроить связанные CSS, JS и SVG прямо в файл</span></label>
   <button class="btn btn-primary btn-block" id="dlGo" type="button" style="margin-top:10px"></button>
   <div class="pop-div"></div>
   <button class="btn btn-block" id="dlZip" type="button"></button>
@@ -260,92 +200,58 @@ window.__hubpadAssets = {cssLoaded:false, cssError:false, i18nLoaded:false, i18n
 <div class="pop" id="pop" hidden></div>
 
 <div class="toasts" id="toasts" aria-live="polite"></div>
-<div class="drop-overlay" id="dropOverlay" hidden>
-  <div class="drop-inner">
-    <div class="empty-ring" id="dropIco"></div>
-    <h3 id="dropTitle">Отпустите файлы, чтобы импортировать</h3>
-    <p id="dropText">.html · .css · .js · .svg · .md · .txt · .json</p>
-  </div>
-</div>
+<div class="drop-overlay" id="dropOverlay" hidden><div class="drop-inner"><div class="empty-ring" id="dropIco"></div><h3 id="dropTitle">Отпустите файлы, чтобы импортировать</h3><p id="dropText">.html · .css · .js · .svg · .md · .txt · .json</p></div></div>
 <input type="file" id="fileInput" hidden multiple accept=".html,.htm,.css,.js,.mjs,.json,.md,.markdown,.svg,.txt,.xml,.webmanifest">
 
 <script>
-/* Диагностика загрузки: срабатывает только если что-то не подхватилось. */
 (function(){
   var checked=false;
-  var FALLBACK = {
-    ru:{title:'HubPad не смог собраться', hide:'Показать страницу как есть', retry:'Проверить ещё раз',
-        intro:'Часть внешних ресурсов не загрузилась.', check:'Что проверить',
-        noI18n:'Не загрузился js/i18n.js — словарь интерфейса. Проверьте папку js/ и порядок подключения.',
-        noCss:'Не загрузился css/styles.css.', noJs:'Не запустился js/app.js.'},
-    en:{title:'HubPad could not assemble itself', hide:'Show the page as is', retry:'Check again',
-        intro:'Some external resources failed to load.', check:'What to check',
-        noI18n:'js/i18n.js did not load — the interface dictionary. Check the js/ folder and the include order.',
-        noCss:'css/styles.css did not load.', noJs:'js/app.js did not run.'}
+  var FALLBACK={
+    ru:{title:'HubPad не смог собраться',hide:'Показать страницу как есть',retry:'Проверить ещё раз',intro:'Часть внешних ресурсов не загрузилась.',check:'Что проверить',noI18n:'Не загрузился js/i18n.js или файлы i18n/*.js.',noCss:'Не загрузился css/styles.css.',noJs:'Не запустился js/app.js.'},
+    en:{title:'HubPad could not assemble itself',hide:'Show the page as is',retry:'Check again',intro:'Some external resources failed to load.',check:'What to check',noI18n:'js/i18n.js or i18n/*.js did not load.',noCss:'css/styles.css did not load.',noJs:'js/app.js did not run.'}
   };
-  function pick(){ var l=(navigator.language||'ru').toLowerCase().split('-')[0]; return FALLBACK[l]?l:'ru'; }
-  var I = window.HubPadI18n, F = FALLBACK[pick()];
-  function t(k,v){ return I ? I.t(k,v) : (F[k]||k); }
-  function abs(p){ try{ return new URL(p, location.href).href; }catch(e){ return p; } }
-
+  function pick(){var l=(navigator.language||'ru').toLowerCase().split('-')[0];return FALLBACK[l]?l:'ru';}
+  var I=window.HubPadI18n,F=FALLBACK[pick()];
+  function t(k,v){return I&&I.list&&I.list().length?I.t(k,v):(F[k]||k);}
+  function abs(p){try{return new URL(p,location.href).href;}catch(e){return p;}}
   function row(ok,title,detail){
-    return '<div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #21262d">'
-      +'<span style="width:9px;height:9px;border-radius:50%;flex:none;margin-top:6px;background:'+(ok?'#3fb950':'#f85149')+';box-shadow:0 0 8px '+(ok?'#3fb950':'#f85149')+'"></span>'
-      +'<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#e6edf3">'+title+'</div>'
-      +'<div style="font-size:12px;color:#8b949e;word-break:break-all">'+detail+'</div></div></div>';
+    return '<div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #21262d"><span style="width:9px;height:9px;border-radius:50%;flex:none;margin-top:6px;background:'+(ok?'#3fb950':'#f85149')+';box-shadow:0 0 8px '+(ok?'#3fb950':'#f85149')+'"></span><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#e6edf3">'+title+'</div><div style="font-size:12px;color:#8b949e;word-break:break-all">'+detail+'</div></div></div>';
   }
   function check(){
-    if(checked) return;
-    var cssOk=false, i18nOk=!!window.HubPadI18n, jsRan=false, initOk=false;
-    try{ cssOk = getComputedStyle(document.documentElement).getPropertyValue('--canvas').trim() !== ''; }catch(e){}
-    var brand=document.getElementById('brand'), list=document.getElementById('fileList');
-    jsRan = !!(brand && brand.childElementCount>0);
-    initOk = !!(list && list.childElementCount>0);
-    if(cssOk && i18nOk && jsRan && initOk){ checked=true; return; }
-    checked=true; show(cssOk,i18nOk,jsRan,initOk);
+    if(checked)return;
+    var cssOk=false,i18nOk=!!(window.HubPadI18n&&window.HubPadI18n.list&&window.HubPadI18n.list().length),jsRan=false,initOk=false;
+    try{cssOk=getComputedStyle(document.documentElement).getPropertyValue('--canvas').trim()!=='';}catch(e){}
+    var brand=document.getElementById('brand'),list=document.getElementById('fileList');
+    jsRan=!!(brand&&brand.childElementCount>0);
+    initOk=!!(list&&list.childElementCount>0);
+    if(cssOk&&i18nOk&&jsRan&&initOk){checked=true;return;}
+    checked=true;show(cssOk,i18nOk,jsRan,initOk);
   }
   function show(cssOk,i18nOk,jsRan,initOk){
-    var A=window.__hubpadAssets||{}, proto=location.protocol, reasons=[];
-    if(proto==='content:') reasons.push(t('diag.content'));
-    if(!i18nOk) reasons.push(t('diag.noI18n'));
-    if(!cssOk) reasons.push(t('diag.noCss'));
-    if(!jsRan) reasons.push(t('diag.noJs'));
-    if(jsRan && !initOk) reasons.push(t('diag.brokenInit'));
-    if(!reasons.length) reasons.push(t('diag.generic'));
-
+    var A=window.__hubpadAssets||{},proto=location.protocol,reasons=[];
+    if(proto==='content:')reasons.push(t('diag.content'));
+    if(!i18nOk)reasons.push(t('diag.noI18n'));
+    if(!cssOk)reasons.push(t('diag.noCss'));
+    if(!jsRan)reasons.push(t('diag.noJs'));
+    if(jsRan&&!initOk)reasons.push(t('diag.brokenInit'));
+    if(!reasons.length)reasons.push(t('diag.generic'));
     var box=document.createElement('div');
-    box.id='hubpadDiag'; box.setAttribute('role','alertdialog');
-    box.style.cssText='position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;'
-      +'background:radial-gradient(700px 400px at 15% -10%,rgba(56,139,253,.14),transparent 60%),radial-gradient(700px 400px at 95% 110%,rgba(163,113,247,.12),transparent 60%),#0d1117;'
-      +'font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif;color:#e6edf3;overflow:auto';
-    box.innerHTML='<div style="width:560px;max-width:100%;background:#161b22;border:1px solid #30363d;border-radius:14px;box-shadow:0 24px 64px rgba(1,4,9,.7);overflow:hidden">'
-      +'<div style="height:3px;background:linear-gradient(90deg,#58a6ff,#a371f7 40%,#db61a2 70%,#f0883e)"></div>'
-      +'<div style="padding:18px 20px 6px">'
-      +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">'
-      +'<span style="display:inline-flex;width:30px;height:30px;border-radius:8px;align-items:center;justify-content:center;background:rgba(248,81,73,.15);color:#f85149;font-size:17px;font-weight:700">!</span>'
-      +'<h1 style="margin:0;font-size:16px;font-weight:700;letter-spacing:-.01em">'+t('diag.title')+'</h1></div>'
-      +'<p style="margin:6px 0 14px;font-size:13px;color:#8b949e">'+t('diag.intro')+'</p>'
+    box.id='hubpadDiag';box.setAttribute('role','alertdialog');
+    box.style.cssText='position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(700px 400px at 15% -10%,rgba(56,139,253,.14),transparent 60%),radial-gradient(700px 400px at 95% 110%,rgba(163,113,247,.12),transparent 60%),#0d1117;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif;color:#e6edf3;overflow:auto';
+    box.innerHTML='<div style="width:560px;max-width:100%;background:#161b22;border:1px solid #30363d;border-radius:14px;box-shadow:0 24px 64px rgba(1,4,9,.7);overflow:hidden"><div style="height:3px;background:linear-gradient(90deg,#58a6ff,#a371f7 40%,#db61a2 70%,#f0883e)"></div><div style="padding:18px 20px 6px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:4px"><span style="display:inline-flex;width:30px;height:30px;border-radius:8px;align-items:center;justify-content:center;background:rgba(248,81,73,.15);color:#f85149;font-size:17px;font-weight:700">!</span><h1 style="margin:0;font-size:16px;font-weight:700;letter-spacing:-.01em">'+t('diag.title')+'</h1></div><p style="margin:6px 0 14px;font-size:13px;color:#8b949e">'+t('diag.intro')+'</p>'
       +row(cssOk,'css/styles.css '+(cssOk?t('diag.loaded'):t('diag.notLoaded')),'<a href="css/styles.css" target="_blank" rel="noopener" style="color:#58a6ff;text-decoration:none">'+abs('css/styles.css')+'</a>')
-      +row(i18nOk,'js/i18n.js '+(i18nOk?t('diag.loaded'):t('diag.notLoaded')),'<a href="js/i18n.js" target="_blank" rel="noopener" style="color:#58a6ff;text-decoration:none">'+abs('js/i18n.js')+'</a>')
+      +row(i18nOk,'i18n/*.js '+(i18nOk?t('diag.loaded'):t('diag.notLoaded')),'<a href="i18n/ru.js" target="_blank" rel="noopener" style="color:#58a6ff;text-decoration:none">'+abs('i18n/ru.js')+'</a>')
       +row(jsRan,'js/app.js '+(jsRan?t('diag.ran'):t('diag.notRan')),'<a href="js/app.js" target="_blank" rel="noopener" style="color:#58a6ff;text-decoration:none">'+abs('js/app.js')+'</a>')
-      +row(initOk,t('diag.init')+' '+(initOk?t('diag.initOk'):t('diag.initBad')),t('diag.proto',{proto:proto})+((A.cssError||A.jsError||A.i18nError)?t('diag.err'):''))
-      +'</div><div style="padding:14px 20px 4px">'
-      +'<div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8b949e;margin-bottom:8px">'+t('diag.check')+'</div>'
-      +'<ol style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:13px;color:#c9d1d9">'+reasons.map(function(r){return '<li>'+r+'</li>';}).join('')+'</ol>'
-      +'<pre style="margin:14px 0 0;padding:12px 14px;background:#0d1117;border:1px solid #30363d;border-radius:8px;font:12px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#8b949e;overflow:auto">'
-      +'hubpad/\n├── index.html\n├── css/\n│   └── styles.css\n└── js/\n    ├── i18n.js\n    └── app.js</pre></div>'
-      +'<div style="display:flex;gap:8px;justify-content:flex-end;padding:16px 20px;margin-top:14px;border-top:1px solid #21262d;flex-wrap:wrap">'
-      +'<button id="hubpadDiagHide" type="button" style="padding:7px 14px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#e6edf3;font:500 13px inherit;cursor:pointer">'+t('diag.hide')+'</button>'
-      +'<button id="hubpadDiagRetry" type="button" style="padding:7px 16px;border-radius:6px;border:1px solid rgba(240,246,252,.1);background:#238636;color:#fff;font:600 13px inherit;cursor:pointer">'+t('diag.retry')+'</button>'
-      +'</div></div>';
+      +row(initOk,t('diag.init')+' '+(initOk?t('diag.initOk'):t('diag.initBad')),t('diag.proto',{proto:proto})+((A.cssError||A.jsError)?t('diag.err'):''))
+      +'</div><div style="padding:14px 20px 4px"><div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8b949e;margin-bottom:8px">'+t('diag.check')+'</div><ol style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:13px;color:#c9d1d9">'+reasons.map(function(r){return '<li>'+r+'</li>';}).join('')+'</ol><pre style="margin:14px 0 0;padding:12px 14px;background:#0d1117;border:1px solid #30363d;border-radius:8px;font:12px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#8b949e;overflow:auto">hubpad/\n├── index.html\n├── css/\n│   ├── styles.css\n│   └── brackets.css\n├── i18n/\n│   ├── manifest.js\n│   ├── ru.js\n│   └── en.js\n└── js/\n    ├── i18n.js\n    ├── app.js\n    └── brackets.js</pre></div><div style="display:flex;gap:8px;justify-content:flex-end;padding:16px 20px;margin-top:14px;border-top:1px solid #21262d;flex-wrap:wrap"><button id="hubpadDiagHide" type="button" style="padding:7px 14px;border-radius:6px;border:1px solid #30363d;background:#21262d;color:#e6edf3;font:500 13px inherit;cursor:pointer">'+t('diag.hide')+'</button><button id="hubpadDiagRetry" type="button" style="padding:7px 16px;border-radius:6px;border:1px solid rgba(240,246,252,.1);background:#238636;color:#fff;font:600 13px inherit;cursor:pointer">'+t('diag.retry')+'</button></div></div>';
     document.body.appendChild(box);
-    document.getElementById('hubpadDiagRetry').addEventListener('click',function(){ location.reload(); });
-    document.getElementById('hubpadDiagHide').addEventListener('click',function(){ box.remove(); });
+    document.getElementById('hubpadDiagRetry').addEventListener('click',function(){location.reload();});
+    document.getElementById('hubpadDiagHide').addEventListener('click',function(){box.remove();});
     document.getElementById('hubpadDiagRetry').focus();
   }
-  if(document.readyState==='complete') setTimeout(check,150);
-  else window.addEventListener('load',function(){ setTimeout(check,150); });
-  setTimeout(check,3500);
+  if(document.readyState==='complete')setTimeout(check,200);
+  else window.addEventListener('load',function(){setTimeout(check,200);});
+  setTimeout(check,4000);
 })();
 </script>
 </body>
